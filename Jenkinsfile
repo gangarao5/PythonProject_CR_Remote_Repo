@@ -9,13 +9,13 @@ pipeline {
             }
         }
 
-        stage('Setup Python Environment') {
+        stage('Create & Activate Venv') {
             steps {
                 bat '''
                 python --version
                 python -m venv venv
                 call venv\\Scripts\\activate
-                python -m pip install --upgrade pip
+                pip install --upgrade pip
                 pip install -r requirements.txt
                 '''
             }
@@ -34,9 +34,6 @@ pipeline {
     post {
         always {
             echo "Pipeline finished"
-        }
-        failure {
-            echo "Tests failed"
         }
     }
 }
