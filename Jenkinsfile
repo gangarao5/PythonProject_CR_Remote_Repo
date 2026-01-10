@@ -72,48 +72,51 @@ pipeline {
             }
         }
 
-       stage('Run API Tests') {
-    steps {
-        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-            bat '''
-                call venv\\Scripts\\activate
-                pytest tests/api -v --disable-warnings
-            '''
+        stage('Run API Tests') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    bat '''
+                    call venv\\Scripts\\activate
+                    pytest tests/api -v --disable-warnings
+                    '''
+                }
+            }
         }
-    }
-}
+
+
 
         stage('Run UI Tests') {
-    steps {
-        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-            bat '''
-                call %VENV_DIR%\\Scripts\\activate
-                pytest tests/ui -v --disable-warnings --capture=tee-sys
-            '''
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    bat '''
+                    call %VENV_DIR%\\Scripts\\activate
+                    pytest tests/ui -v --disable-warnings --capture=tee-sys
+                    '''
+                }
+            }
         }
     }
-}
-
 
     post {
-    always {
-        echo "Archiving test artifacts..."
+        always {
+            echo "Archiving test artifacts..."
 
-        // Archive screenshots (from UI failures)
-        archiveArtifacts artifacts: 'reports/**/*.png', allowEmptyArchive: true
+            // Archive screenshots (from UI failures)
+            archiveArtifacts artifacts: 'reports/**/*.png', allowEmptyArchive: true
 
-        // Archive pytest HTML report (if you generate one)
-        archiveArtifacts artifacts: 'reports/**/*.html', allowEmptyArchive: true
+            // Archive pytest HTML report (if you generate one)
+            archiveArtifacts artifacts: 'reports/**/*.html', allowEmptyArchive: true
 
-        // Optional: clean workspace
-        deleteDir()
-    }
+            // Optional: clean workspace
+            deleteDir()
+        }
 
-    success {
-        echo "✅ Pipeline completed successfully"
-    }
+        success {
+            echo "✅ Pipeline completed successfully"
+        }
 
-    failure {
-        echo "❌ Pipeline failed – check test results & screenshots"
+        failure {
+            echo "❌ Pipeline failed – check test results & screenshots"
+        }
     }
 }
