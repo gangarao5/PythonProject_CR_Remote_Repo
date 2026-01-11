@@ -42,13 +42,25 @@
 
 pipeline {
     agent any
-
+    options {
+        skipDefaultCheckout(true)
+        timestamps()
+    }
     environment {
         VENV_DIR = "venv"
         REPORT_DIR = "reports"
     }
 
+
     stages {
+
+        stage('Clean Workspace') {
+            steps {
+                echo "🧹 Cleaning workspace..."
+                deleteDir()
+            }
+        }
+
 
         stage('Checkout Code') {
             steps {
