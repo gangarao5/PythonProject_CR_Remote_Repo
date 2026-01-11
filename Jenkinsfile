@@ -120,7 +120,7 @@ pipeline {
             archiveArtifacts artifacts: 'reports/**/*.html', allowEmptyArchive: true
 
             // Optional: clean workspace
-            deleteDir()
+//             deleteDir()
         }
 
         success {
@@ -134,7 +134,7 @@ pipeline {
         unstable {
             slackSend(
             channel: "#automation-alerts",
-            message: "⚠️ Jenkins build UNSTABLE: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+            message: " Jenkins build UNSTABLE: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
             )
         }
 
