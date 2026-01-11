@@ -54,12 +54,12 @@ pipeline {
 
     stages {
 
-        stage('Clean Workspace') {
-            steps {
-                echo "🧹 Cleaning workspace..."
-                deleteDir()
-            }
-        }
+//         stage('Clean Workspace') {
+//             steps {
+//                 echo "🧹 Cleaning workspace..."
+//                 deleteDir()
+//             }
+//         }
 
 
         stage('Checkout Code') {
