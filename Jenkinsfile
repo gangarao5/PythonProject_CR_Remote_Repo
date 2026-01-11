@@ -54,12 +54,12 @@ pipeline {
 
     stages {
 
-//         stage('Clean Workspace') {
-//             steps {
-//                 echo "🧹 Cleaning workspace..."
-//                 deleteDir()
-//             }
-//         }
+        stage('Clean Workspace') {
+            steps {
+                echo " Cleaning workspace..."
+                deleteDir()
+            }
+        }
 
 
         stage('Checkout Code') {
@@ -130,5 +130,14 @@ pipeline {
         failure {
             echo "❌ Pipeline failed – check test results & screenshots"
         }
+
+        unstable {
+            slackSend(
+            channel: "#automation-alerts",
+            message: "⚠️ Jenkins build UNSTABLE: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+            )
+        }
+
     }
+
 }
